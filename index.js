@@ -171,7 +171,6 @@ function createRewriter(path){
     
     return function(req){
         var isWebSocket = req.headers.Upgrade == "WebSocket";
-		console.log(req);
         var location = (isWebSocket?"ws":"http")+(req.secure?"s":"")+"://"+req.headers.Host+req.url;
 		
         
@@ -213,13 +212,10 @@ function createRewriter(path){
             req.url = "/";
         }
         
-        //rewrite engine end
-
-        
+        //rewrite engine end        
         
         return function(res){
             res.headers[(isWebSocket?"Sec-WebSocket-":"")+"Location"] = location;
-			console.log(res);
         }
     }   
 }
