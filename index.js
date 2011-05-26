@@ -123,6 +123,7 @@ function createProxyServer(server,onrequest,secure){
                 
                 if(request.secure){
                     var con = tls.connect(request.port,request.host,function(){
+						con.on("error",function(){});
                         onconnect(con);
                     });
                 }else{
@@ -170,11 +171,15 @@ function createRewriter(path){
     
     return function(req){
         var isWebSocket = req.headers.Upgrade == "WebSocket";
+		console.log(req);
         var location = (isWebSocket?"ws":"http")+(req.secure?"s":"")+"://"+req.headers.Host+req.url;
+		
         
         if(!isWebSocket){
             req.protocol = "HTTP/1.0";
-        }
+        }else{
+			location = location.replace(":80","").replace(":443","");
+		}
         
         //rewrite engine start
         
@@ -214,6 +219,7 @@ function createRewriter(path){
         
         return function(res){
             res.headers[(isWebSocket?"Sec-WebSocket-":"")+"Location"] = location;
+			console.log(res);
         }
     }   
 }
