@@ -62,7 +62,11 @@ function createProxyServer(server,onrequest,secure){
                 r += "\r\n";
                 
                 
-                
+                function closeconnection(){
+                    try{
+                        c.close();
+                    }catch(e){}
+                }
                 function onconnect(con){
                     var b = new Buffer(r.length +d.length-index-4);
                     b.write(r);
@@ -121,17 +125,22 @@ function createProxyServer(server,onrequest,secure){
                     con.on("data",ondata);
                 }
                 
+                
                 if(request.secure){
-                    var con = tls.connect(request.port,request.host,function(){
-						con.on("error",function(){});
+                    var con = tls.connect(request.port,request.host,function(){						
                         onconnect(con);
+                        clearTimeout(timeout);
                     });
+                    con.on("error",function(){closeconnection()});
+                    var timeout = setTimeout(closeconnection,5000);
                 }else{
                     var con = net.createConnection(request.port,request.host);
+					con.on("error",function(){closeconnection()});
                     con.on("connect",function(){
                         onconnect(con);
-                    });
-                    con.on("error",function(){});
+                        clearTimeout(timeout);
+                    });                    
+                    var timeout = setTimeout(closeconnection,5000);
                 }                
                 
             }else{
