@@ -54,7 +54,7 @@ nhrp.createSecureServer({                           //create a secure server (ht
 Example 2
 -----------------------------------------------------------------------------------------------------------------------
 
-
+``
 var nhrp = require("nhrp");
 var fs = require("fs");
 var rewriter = nhrp.createRewriter("/path/to/your/configfile.js");      //This rewriter automatically proxy your requests using the
@@ -65,7 +65,7 @@ nhrp.createSecureServer({                           //create a secure server (ht
     cert:fs.readFileSync("/root/certificate.pem"),
     key:fs.readFileSync("/root/key.pem")
 },rewriter).listen(443);                             //both server will now be rewritten by your rewriter
-
+``
 
 configfile.js:
 --------------
