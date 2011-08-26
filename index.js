@@ -64,7 +64,7 @@ function createProxyServer(server,onrequest,secure){
                 
                 function closeconnection(){
                     try{
-                        c.end();
+                        c.destroy();
                     }catch(e){}
                 }
                 function onconnect(con){
