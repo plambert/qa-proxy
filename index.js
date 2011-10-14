@@ -179,7 +179,7 @@ function createRewriter(path){
     loadConfigFile();
     
     return function(req){
-        var isWebSocket = req.headers.Upgrade.toLowerCase() == "websocket";
+        var isWebSocket = (req.headers.Upgrade||"").toLowerCase() == "websocket";
         var location = (isWebSocket?"ws":"http")+(req.secure?"s":"")+"://"+req.headers.Host+req.url;
 		
         
