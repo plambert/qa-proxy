@@ -170,7 +170,8 @@ function createRewriter(path){
                 var parts = r[i].split(" ");
                 rules.push({
                     expression:new RegExp(parts[0].replace(/\//g,"\\\/")),
-                    template:parts[1]
+                    template:parts[1],
+                    option:parts[2]
                 });
             }
         }catch(e){
@@ -178,7 +179,7 @@ function createRewriter(path){
     }
     loadConfigFile();
     
-    return function(req){
+    function rewrite (req){
         var isWebSocket = (req.headers.Upgrade||"").toLowerCase() == "websocket";
         var location = (isWebSocket?"ws":"http")+(req.secure?"s":"")+"://"+req.headers.Host+req.url;
 		
@@ -221,10 +222,18 @@ function createRewriter(path){
             req.url = "/";
         }
         
+        if(rule.option == "R"){
+            var redirecter = rewrite(req);
+        }
+        
         //rewrite engine end        
         
         return function(res){
+            if(redirecter){
+                redirecter(res);
+            }
             res.headers[(isWebSocket?"Sec-WebSocket-":"")+"Location"] = location;
         }
-    }   
+    }
+    return rewrite;
 }
