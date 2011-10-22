@@ -93,3 +93,16 @@ configfile.js:
         "^(ws|wss)://(example.com):([0-9]*)/mywebsocket(.*)$ ws://$2:7070$4"
     
     ]
+    
+    
+If you proxy in incoming connection to this server again, you can add the option "R" at the end of the rule, so you don't have to create a new connection. So it will be much faster, if you apply 2 or more rules at once for 1 request.
+Example:
+
+    [
+        "^http://subsite.com:80(.*)$ http://site.com:80/subsite$1 R",
+        "^http://site.com:80(.*)$ http://localhost:8080"
+    ]
+    
+This example proxies all requests on site.com @ port 80 to the fileserver at port 8080.
+Requests subsite.com are rewritten to http://site.com/subsite[URL] first, after that, it will be proxied in the normal way to the fileserver @ port 8080.
+
