@@ -1,3 +1,5 @@
+# proxy connections with qe-related modifications
+
 var net = require("net");
 var tls = require("tls");
 var fs = require("fs");
