@@ -2,6 +2,7 @@
 var net = require("net");
 var tls = require("tls");
 var fs = require("fs");
+var logger = require("caterpillar");
 
 exports.createSecureServer = createSecureServer;
 exports.createServer = createServer;
@@ -12,6 +13,7 @@ function createSecureServer(options, onrequest, port) {
 }
 
 function createServer(onrequest, port) {
+  console.log('createServer...');
     return createProxyServer(net.createServer(), onrequest, false);
 }
 
@@ -51,7 +53,7 @@ function createProxyServer(server, onrequest, secure) {
 
                 //change something
                 if (onrequest) {
-                    request.headers.Host = request.host + ":" + request.port;
+                    // request.headers.Host = request.host + ":" + request.port;
                     var onresponse = onrequest(request);
 
                 }
