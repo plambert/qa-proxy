@@ -8,7 +8,7 @@ It could be really unstable too. Please report all bugs you find.
 Example 1
 -----------------------------------------------------------------------------------------------------------------------
 
-    var nhrp = require("nhrp");
+    var qap = require("qa-proxy");
     var fs = require("fs");
     
     
@@ -44,8 +44,8 @@ Example 1
             */
         }
     }
-    nhrp.createServer(rewrite).listen(80);              //create a server (http/ws) that listens for connections on port 80
-    nhrp.createSecureServer({                           //create a secure server (https/wss) that listens for connections on port 443
+    qap.createServer(rewrite).listen(80);              //create a server (http/ws) that listens for connections on port 80
+    qap.createSecureServer({                           //create a secure server (https/wss) that listens for connections on port 443
         cert:fs.readFileSync("/root/certificate.pem"),
         key:fs.readFileSync("/root/key.pem")
     },rewrite).listen(443);                             //both server will now be rewritten by your rewrite function
@@ -55,13 +55,13 @@ Example 2
 -----------------------------------------------------------------------------------------------------------------------
 
 
-    var nhrp = require("nhrp");
+    var qap = require("qa-proxy");
     var fs = require("fs");
-    var rewriter = nhrp.createRewriter("/path/to/your/configfile.js");      //This rewriter automatically proxy your requests using the
+    var rewriter = qap.createRewriter("/path/to/your/configfile.js");      //This rewriter automatically proxy your requests using the
                                                                             //regular expressions in the config file below
     
-    nhrp.createServer(rewriter).listen(80);              //create a server (http/ws) that listens for connections on port 80
-    nhrp.createSecureServer({                           //create a secure server (https/wss) that listens for connections on port 443
+    qap.createServer(rewriter).listen(80);              //create a server (http/ws) that listens for connections on port 80
+    qap.createSecureServer({                           //create a secure server (https/wss) that listens for connections on port 443
         cert:fs.readFileSync("/root/certificate.pem"),
         key:fs.readFileSync("/root/key.pem")
     },rewriter).listen(443);                             //both server will now be rewritten by your rewriter
